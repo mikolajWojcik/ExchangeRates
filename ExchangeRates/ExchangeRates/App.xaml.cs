@@ -4,6 +4,8 @@ using ExchangeRates.ViewModels;
 using ExchangeRates.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using ExchangeRates.Services.Interfaces;
+using ExchangeRates.Services;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace ExchangeRates
@@ -30,6 +32,8 @@ namespace ExchangeRates
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+
+            containerRegistry.RegisterSingleton<IAPIService, APIService>();
         }
     }
 }

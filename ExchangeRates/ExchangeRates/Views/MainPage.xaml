@@ -5,7 +5,21 @@
              Title="{Binding Title}">
 
     <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+        <ActivityIndicator IsRunning="{Binding IsBusy}"/>
         <Label Text="Welcome to Xamarin Forms and Prism!" />
+        <Button Command="{Binding RefreshCommand}" Text="Refresh"/>
+        <ListView ItemsSource="{Binding Rates}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding Key}" FontAttributes="Bold"/>
+                            <Label Text="{Binding Value}"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </StackLayout>
 
 </ContentPage>

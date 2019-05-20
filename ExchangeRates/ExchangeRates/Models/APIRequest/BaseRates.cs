@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ExchangeRates.Models.Request
+namespace ExchangeRates.Models.APIRequest
 {
     public class BaseRates
     {

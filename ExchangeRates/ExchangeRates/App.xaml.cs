@@ -30,10 +30,22 @@ namespace ExchangeRates
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            RegisterViewsForNavigation(containerRegistry);
+            RegisterServices(containerRegistry);
+        }
+
+        private static void RegisterServices(IContainerRegistry containerRegistry)
+        {
+            containerRegistry.RegisterSingleton<IAPIService, APIService>();
+            containerRegistry.RegisterSingleton<ISettingsService, SettingsService>();
+            containerRegistry.RegisterSingleton<IFilesManagerService, FilesManagerService>();
+            containerRegistry.RegisterSingleton<IExchangeRatesStore, ExchangeRatesStore>();
+        }
+
+        private static void RegisterViewsForNavigation(IContainerRegistry containerRegistry)
+        {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
-
-            containerRegistry.RegisterSingleton<IAPIService, APIService>();
         }
     }
 }

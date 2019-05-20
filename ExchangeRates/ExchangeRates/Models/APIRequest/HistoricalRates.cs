@@ -1,5 +1,5 @@
 ﻿using ExchangeRates.Models.Enums;
-using ExchangeRates.Models.Request;
+using ExchangeRates.Models.APIRequest;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

@@ -2,13 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ExchangeRates.Services.Interfaces
 {
     public interface ISettingsService
     {
-        CurrencyType GetBaseCurrencyType();
+        Task<CurrencyType> GetBaseCurrencyTypeAsync();
 
-        IEnumerable<CurrencyType> GetSymbolsList();
+        Task<IEnumerable<CurrencyType>> GetSymbolsListAsync();
+
+        Task SaveSettingsAsync(CurrencyType baseCurrency, IEnumerable<CurrencyType> symbols);
     }
 }

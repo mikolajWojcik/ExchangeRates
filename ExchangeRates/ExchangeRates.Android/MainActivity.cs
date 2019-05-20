@@ -1,6 +1,9 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Prism;
 using Prism.Ioc;
 
@@ -18,6 +21,8 @@ namespace ExchangeRates.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App(new AndroidInitializer()));
+
+            AppCenter.Start("11b52d69-a1c5-48c1-b1c8-091137d43b31", typeof(Analytics), typeof(Crashes));
         }
     }
 

@@ -18,5 +18,10 @@ namespace ExchangeRates.Services
         {
             throw new NotImplementedException();
         }
+
+        public void SaveRates(HistoricalRates rates)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

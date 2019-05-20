@@ -11,5 +11,7 @@ namespace ExchangeRates.Services.Interfaces
         Dictionary<CurrencyType, Dictionary<int, IEnumerable<int>>> GetDataStoredOfflline(CurrencyType baseCurrency);
 
         IEnumerable<ExchangeRateItem> GetLatestOfflineData(CurrencyType baseCurrency, IEnumerable<CurrencyType> symbols);
+
+        void SaveRates(HistoricalRates rates);
     }
 }

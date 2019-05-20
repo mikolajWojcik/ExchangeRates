@@ -15,17 +15,21 @@ namespace ExchangeRates.Services
     public class APIService : IAPIService
     {
         private readonly string _baseURI = "https://api.exchangeratesapi.io/";
+        private readonly HttpClient _httpClient;
+
+        public APIService()
+        {
+            _httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(_baseURI)
+            };
+        }
 
         public async Task<LatestRates> GetLatestAsync(CurrencyType? baseCurrency = null, IEnumerable<CurrencyType> symbols = null)
         {
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.BaseAddress = new Uri(_baseURI);
+            var query = CreateDefaultQuerry(baseCurrency, symbols, "latest");
 
-                var query = CreateDefaultQuerry(baseCurrency, symbols, "latest");
-
-                return await RunGetAsync<LatestRates>(httpClient, query.ToString());
-            }
+            return await RunGetAsync<LatestRates>(query);            
         }
 
         public async Task<HistoricalRates> GetHistoricalRatesAsync(DateTime startDate, DateTime endDate, CurrencyType? baseCurrency = null, IEnumerable<CurrencyType> symbols = null)
@@ -33,25 +37,20 @@ namespace ExchangeRates.Services
             if (startDate < new DateTime(1999, 01, 01))
                 throw new ArgumentException("Historical data is not supported before 1999-01-01");
 
-            if (endDate > DateTime.Today)
-                throw new ArgumentException("No future data is provided");
+            if (endDate < startDate)
+                throw new ArgumentException("End date should be after start date");
 
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.BaseAddress = new Uri(_baseURI);
+            var queryString = CreateDefaultQuerry(baseCurrency, symbols, "history");
 
-                var queryString = CreateDefaultQuerry(baseCurrency, symbols, "history");
+            queryString = $"{queryString}start_at={FormatDateForQuery(startDate)}&";
+            queryString = $"{queryString}end_at={FormatDateForQuery(endDate)}&";
 
-                queryString = $"{queryString}start_at={FormatDateForQuery(startDate)}&";
-                queryString = $"{queryString}end_at={FormatDateForQuery(endDate)}&";
-
-                return await RunGetAsync<HistoricalRates>(httpClient, queryString);
-            }
+            return await RunGetAsync<HistoricalRates>(queryString);            
         }
 
-        private static async Task<T> RunGetAsync<T>(HttpClient httpClient, string url) where T : new()
+        private async Task<T> RunGetAsync<T>(string url) where T : new()
         {
-            var response = await httpClient.GetAsync(url);
+            var response = await _httpClient.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
             {
@@ -66,7 +65,7 @@ namespace ExchangeRates.Services
 
         private string CreateDefaultQuerry(CurrencyType? baseCurrency, IEnumerable<CurrencyType> symbols, string apiResource)
         {
-            var outputString = $"{_baseURI}{apiResource}?";
+            var outputString = $"{apiResource}?";
 
             if (baseCurrency != null)
                 outputString = $"{outputString}base={baseCurrency}&";

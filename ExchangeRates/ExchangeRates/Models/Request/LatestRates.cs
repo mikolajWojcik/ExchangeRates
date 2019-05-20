@@ -1,11 +1,12 @@
 ﻿using ExchangeRates.Models.Enums;
+using ExchangeRates.Models.Request;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
 namespace ExchangeRates.Models
 {
-    public class LatestRates
+    public class LatestRates : BaseRates
     {
         [JsonProperty(PropertyName = "rates")]
         public Dictionary<CurrencyType, double> Rates { get; set; }

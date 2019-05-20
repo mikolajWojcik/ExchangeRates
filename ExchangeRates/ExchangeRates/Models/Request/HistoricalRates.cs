@@ -1,4 +1,5 @@
 ﻿using ExchangeRates.Models.Enums;
+using ExchangeRates.Models.Request;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace ExchangeRates.Models
 {
-    public class HistoricalRates
+    public class HistoricalRates : BaseRates
     {
         [JsonProperty(PropertyName = "rates")]
         public Dictionary<DateTime, Dictionary<CurrencyType, double>> Rates { get; set; }

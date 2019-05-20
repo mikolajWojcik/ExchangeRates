@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExchangeRates.iOS", "Exchan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExchangeRates.UITest", "ExchangeRatesUITest\ExchangeRates.UITest.csproj", "{B19C892E-2628-4CA7-AD27-08D406A3B14B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExchangeRates.UnitTest", "ExchangeRates.UnitTest\ExchangeRates.UnitTest.csproj", "{AA01F1A8-CB18-4F8F-A7AF-5AF2FDE63D70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExchangeRates.Test", "ExchangeRates.UnitTest\ExchangeRates.Test.csproj", "{AA01F1A8-CB18-4F8F-A7AF-5AF2FDE63D70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

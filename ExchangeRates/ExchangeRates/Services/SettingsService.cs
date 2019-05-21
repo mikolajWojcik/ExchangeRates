@@ -3,6 +3,7 @@ using ExchangeRates.Services.Interfaces;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,8 +12,15 @@ using Xamarin.Essentials;
 
 namespace ExchangeRates.Services
 {
-    public class SettingsService : ISettingsService
-    {
+    public class SettingsService : BindableBase, ISettingsService
+    {      
+        private CurrencyType _baseCurrency;
+        private IEnumerable<CurrencyType> _symbolsList = new List<CurrencyType>
+        {
+            CurrencyType.GBP,
+            CurrencyType.USD,
+            CurrencyType.CHF
+        };
         private readonly ISecureStorageWrapper _wrapper;
 
         public SettingsService(ISecureStorageWrapper storageWrapper)
@@ -20,59 +28,59 @@ namespace ExchangeRates.Services
             _wrapper = storageWrapper;
         }
 
-        public async Task<CurrencyType> GetBaseCurrencyTypeAsync()
+        public CurrencyType BaseCurrency
         {
-            var returnObject = CurrencyType.EUR;
+            get { return _baseCurrency; }
+            set { SetProperty(ref _baseCurrency, value, () => BaseCurrencyChanged?.Invoke(this, new EventArgs())); }
+        }
 
+        public IEnumerable<CurrencyType> SymbolsList
+        {
+            get { return _symbolsList; }
+            set { SetProperty(ref _symbolsList, value, () => SymbolsListChanged?.Invoke(this, new EventArgs())); }
+        }
+
+        public event EventHandler BaseCurrencyChanged;
+        public event EventHandler SymbolsListChanged;
+
+        public async Task<CurrencyType> LoadBaseCurrencyTypeAsync()
+        {
             try
             {
                 var baseString = await _wrapper.GetAsync(_wrapper.BaseCurrencySettingLocation);
 
-                if(!string.IsNullOrEmpty(baseString))
-                    returnObject = (CurrencyType)Enum.Parse(typeof(CurrencyType), baseString);
+                if (!string.IsNullOrEmpty(baseString))
+                    BaseCurrency = (CurrencyType)Enum.Parse(typeof(CurrencyType), baseString);             
             }
             catch(Exception ex)
             {
                 Crashes.TrackError(ex);
             }
 
-            return returnObject;
+            return BaseCurrency;
         }
 
-        public async Task<IEnumerable<CurrencyType>> GetSymbolsListAsync()
+        public async Task<IEnumerable<CurrencyType>> LoadSymbolsListAsync()
         {
-            var returnList = new List<CurrencyType>
-            {
-                CurrencyType.GBP,
-                CurrencyType.USD,
-                CurrencyType.CHF
-            };
-
             try
             {
                 var listString = await _wrapper.GetAsync(_wrapper.SymbolsListSettingLocation);
 
                 if(!string.IsNullOrEmpty(listString))
-                    returnList = JsonConvert.DeserializeObject<List<CurrencyType>>(listString);
+                    SymbolsList = JsonConvert.DeserializeObject<List<CurrencyType>>(listString);
             }
             catch(Exception ex)
             {
                 Crashes.TrackError(ex);
             }
-
-            return returnList;
+            return SymbolsList;
         }
 
-        public void RemoveAllSettings()
+        public async Task SaveSettingsAsync()
         {
-            SecureStorage.RemoveAll();
-        }
+            await SecureStorage.SetAsync(_wrapper.BaseCurrencySettingLocation, BaseCurrency.ToString());
 
-        public async Task SaveSettingsAsync(CurrencyType baseCurrency, IEnumerable<CurrencyType> symbols)
-        {
-            await SecureStorage.SetAsync(_wrapper.BaseCurrencySettingLocation, baseCurrency.ToString());
-
-            var symbolsJson = JsonConvert.SerializeObject(symbols);
+            var symbolsJson = JsonConvert.SerializeObject(SymbolsList);
             await SecureStorage.SetAsync(_wrapper.SymbolsListSettingLocation, symbolsJson);
         }
     }

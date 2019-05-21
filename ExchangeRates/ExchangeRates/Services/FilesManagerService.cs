@@ -19,6 +19,11 @@ namespace ExchangeRates.Services
             throw new NotImplementedException();
         }
 
+        public bool IsDataAviableOffline(CurrencyType currencyType, int month, int year)
+        {
+            return false;
+        }
+
         public void SaveRates(HistoricalRates rates)
         {
             throw new NotImplementedException();

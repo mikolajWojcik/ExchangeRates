@@ -20,7 +20,7 @@ namespace ExchangeRates.Test.Services
             mock.SetReturnsDefault<string>(string.Empty);
             ISettingsService service = new SettingsService(mock.Object);
 
-            var baseCurrency = await service.GetBaseCurrencyTypeAsync();
+            var baseCurrency = await service.LoadBaseCurrencyTypeAsync();
 
             Assert.AreEqual(CurrencyType.EUR, baseCurrency);
         }
@@ -32,7 +32,7 @@ namespace ExchangeRates.Test.Services
             mock.SetReturnsDefault<string>(string.Empty);
             ISettingsService service = new SettingsService(mock.Object);
 
-            var symbolsList = await service.GetSymbolsListAsync();
+            var symbolsList = await service.LoadSymbolsListAsync();
             var defaultList = new List<CurrencyType>
             {
                 CurrencyType.GBP,
@@ -52,7 +52,7 @@ namespace ExchangeRates.Test.Services
                 .Returns(Task.FromResult<string>(baseCurrency.ToString()));
             ISettingsService service = new SettingsService(mock.Object);
 
-            var actualCurrency = await service.GetBaseCurrencyTypeAsync();
+            var actualCurrency = await service.LoadBaseCurrencyTypeAsync();
 
             Assert.AreEqual(baseCurrency, actualCurrency);
         }
@@ -71,7 +71,7 @@ namespace ExchangeRates.Test.Services
                 .Returns(Task.FromResult<string>(JsonConvert.SerializeObject(symbolsList)));
             ISettingsService service = new SettingsService(mock.Object);
 
-            var actualSymbolsList = await service.GetSymbolsListAsync();
+            var actualSymbolsList = await service.LoadSymbolsListAsync();
 
             Assert.That(actualSymbolsList, Is.EquivalentTo(symbolsList));
         }

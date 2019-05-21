@@ -8,10 +8,14 @@ namespace ExchangeRates.Services.Interfaces
 {
     public interface ISettingsService
     {
-        Task<CurrencyType> GetBaseCurrencyTypeAsync();
+        Task<CurrencyType> LoadBaseCurrencyTypeAsync();
+        Task<IEnumerable<CurrencyType>> LoadSymbolsListAsync();
+        Task SaveSettingsAsync();
 
-        Task<IEnumerable<CurrencyType>> GetSymbolsListAsync();
+        CurrencyType BaseCurrency { get; set; }
+        IEnumerable<CurrencyType> SymbolsList { get; set; }
 
-        Task SaveSettingsAsync(CurrencyType baseCurrency, IEnumerable<CurrencyType> symbols);
+        event EventHandler BaseCurrencyChanged;
+        event EventHandler SymbolsListChanged;
     }
 }

@@ -13,5 +13,6 @@ namespace ExchangeRates.Services.Interfaces
         IEnumerable<ExchangeRateItem> GetLatestOfflineData(CurrencyType baseCurrency, IEnumerable<CurrencyType> symbols);
 
         void SaveRates(HistoricalRates rates);
+        bool IsDataAviableOffline(CurrencyType currencyType, int month, int year);
     }
 }

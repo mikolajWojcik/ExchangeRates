@@ -26,6 +26,7 @@ namespace ExchangeRates.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::Microcharts.Droid.Resource.String.library_name = global::ExchangeRates.Droid.Resource.String.library_name;
 			global::Xamarin.Essentials.Resource.Attribute.font = global::ExchangeRates.Droid.Resource.Attribute.font;
 			global::Xamarin.Essentials.Resource.Attribute.fontProviderAuthority = global::ExchangeRates.Droid.Resource.Attribute.fontProviderAuthority;
 			global::Xamarin.Essentials.Resource.Attribute.fontProviderCerts = global::ExchangeRates.Droid.Resource.Attribute.fontProviderCerts;
@@ -6189,6 +6190,9 @@ namespace ExchangeRates.Droid
 			
 			// aapt resource value: 0x7f0b0035
 			public const int character_counter_pattern = 2131427381;
+			
+			// aapt resource value: 0x7f0b003c
+			public const int library_name = 2131427388;
 			
 			// aapt resource value: 0x7f0b0000
 			public const int mr_button_content_description = 2131427328;

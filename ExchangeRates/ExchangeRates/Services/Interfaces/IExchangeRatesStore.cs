@@ -2,14 +2,15 @@
 using ExchangeRates.Models.Enums;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using Entry = Microcharts.Entry;
+using System.Threading.Tasks;
 
 namespace ExchangeRates.Services.Interfaces
 {
     public interface IExchangeRatesStore
     {
-        IEnumerable<ExchangeRateItem> GetLatestRates();
+        Task<IEnumerable<ExchangeRateItem>> GetLatestRatesAsync();
 
-        IEnumerable<ExchangeRateItem> GetDataForChartGeneration(CurrencyType currencyType, int month, int year);
+        Task<IEnumerable<Entry>> GetDataForChartGenerationAsync(CurrencyType currencyType, int month, int year);
     }
 }

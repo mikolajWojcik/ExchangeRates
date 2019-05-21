@@ -41,12 +41,15 @@ namespace ExchangeRates
             containerRegistry.RegisterSingleton<IFilesManagerService, FilesManagerService>();
             containerRegistry.RegisterSingleton<IExchangeRatesStore, ExchangeRatesStore>();
             containerRegistry.RegisterSingleton<ISecureStorageWrapper, SecureStorageWrapper>();
+            containerRegistry.RegisterSingleton<IChartsEntryAdapter, ChartsEntryAdapter>();
         }
 
         private static void RegisterViewsForNavigation(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<ChartPage, ChartPageViewModel>();
+            containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
         }
     }
 }

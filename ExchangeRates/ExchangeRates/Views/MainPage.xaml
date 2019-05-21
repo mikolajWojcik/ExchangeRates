@@ -1,20 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ExchangeRates.Views.MainPage"
-             Title="{Binding Title}">
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ExchangeRates.Views.MainPage"
+    x:Name="ContentPage"
+    Title="{Binding Title}">
 
     <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-        <ActivityIndicator IsRunning="{Binding IsBusy}"/>
-        <Label Text="Welcome to Xamarin Forms and Prism!" />
-        <Button Command="{Binding RefreshCommand}" Text="Refresh"/>
+        <Button Command="{Binding ShowSettingsCommand}" Text="Settings"/>
         <ListView ItemsSource="{Binding Rates}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding Key}" FontAttributes="Bold"/>
+                            <Label Text="{Binding CurrencyType}" FontAttributes="Bold"/>
                             <Label Text="{Binding Value}"/>
+                            <Label Text="{Binding Date, StringFormat='Record date: {0:dd MMMM YYYY}'}" />
+                            <Button Command="{Binding BindingContext.ShowChartCommand, Source={x:Reference ContentPage}}" CommandParameter="{Binding .}" Text="Chart"/>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

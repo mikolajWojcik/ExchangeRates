@@ -11,16 +11,24 @@ namespace ExchangeRates.ViewModels
     {
         protected INavigationService NavigationService { get; private set; }
 
+        private bool _isBusy;
         private string _title;
-        public string Title
-        {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
-        }
 
         public ViewModelBase(INavigationService navigationService)
         {
             NavigationService = navigationService;
+        }
+
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value);}
+        }
+
+        public string Title
+        {
+            get { return _title; }
+            set { SetProperty(ref _title, value); }
         }
 
         public virtual void OnNavigatedFrom(INavigationParameters parameters)

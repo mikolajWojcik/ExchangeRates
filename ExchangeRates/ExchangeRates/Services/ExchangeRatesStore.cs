@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microcharts;
 using System.Linq;
+using ExchangeRates.Services.Interfaces.Base;
 
 namespace ExchangeRates.Services
 {
@@ -17,16 +18,22 @@ namespace ExchangeRates.Services
         private readonly IFilesManagerService _filesManagerService;
         private readonly ISettingsService _settingsService;
         private readonly IChartsEntryAdapter _entryAdapter;
+        private readonly IExchangeRateItemAdapter _rateItemAdapter;
 
-        public ExchangeRatesStore(IAPIService aPIService, IFilesManagerService filesManager, ISettingsService settingsService, IChartsEntryAdapter entryAdapter)
+        public ExchangeRatesStore(IAPIService aPIService, IFilesManagerService filesManager, ISettingsService settingsService, IChartsEntryAdapter entryAdapter, IExchangeRateItemAdapter rateItemAdapter)
         {
             _APIService = aPIService;
             _filesManagerService = filesManager;
             _settingsService = settingsService;
             _entryAdapter = entryAdapter;
+            _rateItemAdapter = rateItemAdapter;
+
+            Initialize = InitializeAsync();
         }
 
         public SortedDictionary<DateTime, Dictionary<CurrencyType, double>> Rates { get; set; }
+
+        public Task Initialize { get; }
 
         public async Task<IEnumerable<ChartEntry>> GetDataForChartGenerationAsync(CurrencyType currencyType, int month, int year)
         {
@@ -40,36 +47,24 @@ namespace ExchangeRates.Services
             var endDate = new DateTime(year, month, DateTime.DaysInMonth(year, month));
 
             if (!IsDataAviableOffline(currencyType, startDate, endDate))
-            {
-                var baseCurrency = await _settingsService.LoadBaseCurrencyTypeAsync();
-                var symbolsList = await _settingsService.LoadSymbolsListAsync();             
-
-                var historicalRates = await _APIService.GetHistoricalRatesAsync(startDate, endDate, baseCurrency, symbolsList);
+            {   
+                var historicalRates = await _APIService.GetHistoricalRatesAsync(startDate, endDate, _settingsService.BaseCurrency, _settingsService.SymbolsList);
                 await UpdateRatesAsync(historicalRates);
 
-                return _entryAdapter.CreateMicrochartsList(historicalRates.Rates, currencyType);
+                return _entryAdapter.CreateChartEntryList(historicalRates.Rates, currencyType);
             }
             else
             {
                 var filteredRates = GetFilteredRates(startDate, endDate);
-                return _entryAdapter.CreateMicrochartsList(filteredRates, currencyType);
+                return _entryAdapter.CreateChartEntryList(filteredRates, currencyType);
             }
         }
 
         public async Task<IEnumerable<ExchangeRateItem>> GetLatestRatesAsync()
         {
-            var baseCurrency = await _settingsService.LoadBaseCurrencyTypeAsync();
-            var symbolsList = await _settingsService.LoadSymbolsListAsync();
+            var latestRates = await _APIService.GetLatestAsync(_settingsService.BaseCurrency, _settingsService.SymbolsList);
 
-            var latestRates = await _APIService.GetLatestAsync(baseCurrency, symbolsList);
-
-            return latestRates.ConvertToExchangeRateItem();
-        }
-
-        public async Task InitializeAsync()
-        {
-            var baseCurrency = await _settingsService.LoadBaseCurrencyTypeAsync();
-            Rates = await _filesManagerService.GetDataStoredOffllineAsync(baseCurrency);
+            return _rateItemAdapter.CreateExchangeRateItemList(latestRates);
         }
 
         private SortedDictionary<DateTime, Dictionary<CurrencyType, double>> GetFilteredRates( DateTime startDate, DateTime endDate)
@@ -87,7 +82,8 @@ namespace ExchangeRates.Services
 
         private bool IsDataAviableOffline(CurrencyType currencyType, DateTime startDate, DateTime endDate)
         {
-            return Rates.Count(x => x.Key >= startDate && x.Key <= endDate && x.Value.ContainsKey(currencyType)) > 0;
+            return Rates != null &&
+                Rates.Count(x => x.Key >= startDate && x.Key <= endDate && x.Value.ContainsKey(currencyType)) > 0;
         }
 
         private async Task UpdateRatesAsync(HistoricalRates historicalRates)
@@ -104,7 +100,15 @@ namespace ExchangeRates.Services
                 }
             }
 
-            await _filesManagerService.SaveRatesAsync(Rates);
+            await _filesManagerService.SaveRatesAsync(_settingsService.BaseCurrency, Rates);
+        }
+
+        private async Task InitializeAsync()
+        {
+            await _settingsService.Initialize.ContinueWith(async (t) =>
+            {
+                Rates = await _filesManagerService.GetDataStoredOffllineAsync(_settingsService.BaseCurrency);
+            });
         }
     }
 }

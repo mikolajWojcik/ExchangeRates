@@ -1,5 +1,6 @@
 ﻿using ExchangeRates.Models.Enums;
 using ExchangeRates.Services.Interfaces;
+using ExchangeRates.Services.Interfaces.Base;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
@@ -26,6 +27,14 @@ namespace ExchangeRates.Services
         public SettingsService(ISecureStorageWrapper storageWrapper)
         {
             _wrapper = storageWrapper;
+
+            Initialize = InitializeAsync();
+        }
+
+        private async Task InitializeAsync()
+        {
+            await LoadBaseCurrencyTypeAsync();
+            await LoadSymbolsListAsync();
         }
 
         public CurrencyType BaseCurrency
@@ -39,6 +48,8 @@ namespace ExchangeRates.Services
             get { return _symbolsList; }
             set { SetProperty(ref _symbolsList, value, () => SymbolsListChanged?.Invoke(this, new EventArgs())); }
         }
+
+        public Task Initialize { get; }
 
         public event EventHandler BaseCurrencyChanged;
         public event EventHandler SymbolsListChanged;

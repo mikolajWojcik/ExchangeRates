@@ -40,8 +40,11 @@ namespace ExchangeRates
             containerRegistry.RegisterSingleton<ISettingsService, SettingsService>();
             containerRegistry.RegisterSingleton<IFilesManagerService, FilesManagerService>();
             containerRegistry.RegisterSingleton<IExchangeRatesStore, ExchangeRatesStore>();
+
             containerRegistry.RegisterSingleton<ISecureStorageWrapper, SecureStorageWrapper>();
+
             containerRegistry.RegisterSingleton<IChartsEntryAdapter, ChartsEntryAdapter>();
+            containerRegistry.RegisterSingleton<IExchangeRateItemAdapter, ExchangeRateItemAdapter>();
         }
 
         private static void RegisterViewsForNavigation(IContainerRegistry containerRegistry)

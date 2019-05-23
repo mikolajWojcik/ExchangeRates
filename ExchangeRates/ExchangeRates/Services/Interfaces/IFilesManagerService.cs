@@ -11,6 +11,6 @@ namespace ExchangeRates.Services.Interfaces
     {
         Task<SortedDictionary<DateTime, Dictionary<CurrencyType, double>>> GetDataStoredOffllineAsync(CurrencyType baseCurrency);
 
-        Task SaveRatesAsync(SortedDictionary<DateTime, Dictionary<CurrencyType, double>> rates);
+        Task SaveRatesAsync(CurrencyType baseCurrency, SortedDictionary<DateTime, Dictionary<CurrencyType, double>> rates);
     }
 }

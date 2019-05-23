@@ -137,12 +137,10 @@ namespace ExchangeRates.ViewModels
 
         public async override void OnNavigatedTo(INavigationParameters parameters)
         {
-            await Task.WhenAll(
-                _settingsService.LoadBaseCurrencyTypeAsync(),
-                _settingsService.LoadSymbolsListAsync()).ContinueWith(async(t) =>
-                {
-                    await RefreshRatesAsync();
-                });
+            await _ratesStore.Initialize.ContinueWith(async(t) =>
+            {
+                await RefreshRatesAsync();
+            });
         }
     }
 }

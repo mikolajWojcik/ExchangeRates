@@ -1,11 +1,14 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Android.Runtime;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Prism;
 using Prism.Ioc;
+using System;
+using System.Threading.Tasks;
 
 namespace ExchangeRates.Droid
 {
@@ -23,6 +26,25 @@ namespace ExchangeRates.Droid
             LoadApplication(new App(new AndroidInitializer()));
 
             AppCenter.Start("11b52d69-a1c5-48c1-b1c8-091137d43b31", typeof(Analytics), typeof(Crashes));
+
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+            TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
+            AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironmentOnUnhandledException;
+        }
+
+        private void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Crashes.TrackError((Exception)e.ExceptionObject);
+        }
+
+        private void TaskSchedulerOnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            Crashes.TrackError(e.Exception);
+        }
+
+        private void AndroidEnvironmentOnUnhandledException(object sender, RaiseThrowableEventArgs e)
+        {
+            Crashes.TrackError(e.Exception);
         }
     }
 

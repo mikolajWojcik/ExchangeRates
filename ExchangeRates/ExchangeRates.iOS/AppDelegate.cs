@@ -4,6 +4,8 @@ using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Prism;
 using Prism.Ioc;
+using System;
+using System.Threading.Tasks;
 using UIKit;
 
 
@@ -29,7 +31,20 @@ namespace ExchangeRates.iOS
 
             AppCenter.Start("36997fb5-4bae-4a7e-aa42-001be5a959e2", typeof(Analytics), typeof(Crashes));
 
+            AppDomain.CurrentDomain.UnhandledException += OnCurrentDomainUnhandledException;
+            TaskScheduler.UnobservedTaskException += OnTaskSchedulerUnobservedTaskException;
+
             return base.FinishedLaunching(app, options);
+        }
+
+        private void OnTaskSchedulerUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            Crashes.TrackError(e.Exception);
+        }
+
+        private void OnCurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Crashes.TrackError((Exception)e.ExceptionObject);
         }
     }
 

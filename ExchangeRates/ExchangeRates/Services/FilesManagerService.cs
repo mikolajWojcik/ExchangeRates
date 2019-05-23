@@ -1,6 +1,7 @@
 ﻿using ExchangeRates.Models;
 using ExchangeRates.Models.Enums;
 using ExchangeRates.Services.Interfaces;
+using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,27 @@ namespace ExchangeRates.Services
         {
             var fileName = CreateFileNameForBase(baseCurrency.ToString());
 
-            if (File.Exists(fileName))
+            try
             {
-                using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                if (File.Exists(fileName))
                 {
-                    using (var streamReader = new StreamReader(fileStream))
-                    { 
-                        var json = await streamReader.ReadToEndAsync();
-                        return JsonConvert.DeserializeObject<SortedDictionary<DateTime, Dictionary<CurrencyType, double>>>(json);
+                    using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                    {
+                        using (var streamReader = new StreamReader(fileStream))
+                        {
+                            var json = await streamReader.ReadToEndAsync();
+                            return JsonConvert.DeserializeObject<SortedDictionary<DateTime, Dictionary<CurrencyType, double>>>(json);
+                        }
                     }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return new SortedDictionary<DateTime, Dictionary<CurrencyType, double>>();
+                Crashes.TrackError(ex);
+                File.Delete(fileName);
             }
+
+            return new SortedDictionary<DateTime, Dictionary<CurrencyType, double>>();          
         }
 
         public async Task SaveRatesAsync(CurrencyType baseCurrency, SortedDictionary<DateTime, Dictionary<CurrencyType, double>> rates)
@@ -40,13 +47,15 @@ namespace ExchangeRates.Services
             var jsonToSave = JsonConvert.SerializeObject(rates);
             var fileName = CreateFileNameForBase(baseCurrency.ToString());
 
-            using (var fileStream = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write))
+            File.Delete(fileName);
+
+            using (var fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
             {
                 using (var streamWriter = new StreamWriter(fileStream))
                 {
                     await streamWriter.WriteAsync(jsonToSave);
                 }
-            }
+            }         
         }
 
         private string CreateFileNameForBase(string name)

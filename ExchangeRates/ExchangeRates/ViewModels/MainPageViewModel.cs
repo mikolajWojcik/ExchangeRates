@@ -19,22 +19,21 @@ namespace ExchangeRates.ViewModels
     public class MainPageViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
-        private readonly IExchangeRatesStore _ratesStore;
-        private readonly ISettingsService _settingsService;
+        private readonly IExchangeRatesStore _ratesStore;    
         private ObservableCollection<ExchangeRateItem> _rates;
 
         public MainPageViewModel(INavigationService navigationService, IExchangeRatesStore ratesStore, ISettingsService settingsService)
             : base(navigationService)
         {
-            Title = "Main Page";
+            Title = "Exchange rates application";
 
             _navigationService = navigationService;
 
             _ratesStore = ratesStore;
 
-            _settingsService = settingsService;
-            _settingsService.BaseCurrencyChanged += async (sender, e) => await RefreshRatesAsync();
-            _settingsService.SymbolsListChanged += async (sender, e) => await RefreshRatesAsync();
+            SettingsService = settingsService;
+            SettingsService.BaseCurrencyChanged += async (sender, e) => await RefreshRatesAsync();
+            SettingsService.SymbolsListChanged += async (sender, e) => await RefreshRatesAsync();
 
             ShowSettingsCommand = new DelegateCommand(ShowSettings, () => !IsBusy)
                 .ObservesProperty(() => IsBusy);
@@ -42,11 +41,33 @@ namespace ExchangeRates.ViewModels
             ShowChartCommand = new DelegateCommand<ExchangeRateItem>(ShowChart, (t) => !IsBusy && t != null)
                 .ObservesProperty(() => IsBusy);
 
+            ShowCachedDataCommand = new DelegateCommand(ShowCachedData, () => !IsBusy)
+                .ObservesProperty(() => IsBusy);
+
             DecrementChartDateCommand = new DelegateCommand<ExchangeRateItem>(DecrementChartDate, CanDecrementDate)
                 .ObservesProperty(() => IsBusy);
 
             IncrementChartDateCommand = new DelegateCommand<ExchangeRateItem>(IncrementChartDate, CanIncrementChartDate)
                 .ObservesProperty(() => IsBusy);
+        }
+
+        public ISettingsService SettingsService { get; }
+        public DelegateCommand RefreshCommand { get; }
+        public DelegateCommand ShowSettingsCommand { get; }
+        public DelegateCommand<ExchangeRateItem> ShowChartCommand { get; }
+        public DelegateCommand ShowCachedDataCommand { get; }
+        public DelegateCommand<ExchangeRateItem> DecrementChartDateCommand { get; }
+        public DelegateCommand<ExchangeRateItem> IncrementChartDateCommand { get; }
+
+        public ObservableCollection<ExchangeRateItem> Rates
+        {
+            get { return _rates; }
+            set { SetProperty(ref _rates, value); }
+        }
+
+        private void ShowCachedData()
+        {
+            NavigateToPage(nameof(DataManagerPage));
         }
 
         private void IncrementChartDate(ExchangeRateItem obj)
@@ -67,18 +88,6 @@ namespace ExchangeRates.ViewModels
         private bool CanDecrementDate(ExchangeRateItem arg)
         {
             return !IsBusy && arg != null && arg.ChartDate.AddMonths(-1) >= new DateTime(1999, 1, 1);
-        }
-
-        public DelegateCommand RefreshCommand { get; }
-        public DelegateCommand ShowSettingsCommand { get; }
-        public DelegateCommand<ExchangeRateItem> ShowChartCommand { get; }
-        public DelegateCommand<ExchangeRateItem> DecrementChartDateCommand { get; }
-        public DelegateCommand<ExchangeRateItem> IncrementChartDateCommand { get; }
-
-        public ObservableCollection<ExchangeRateItem> Rates
-        {
-            get { return _rates; }
-            set { SetProperty(ref _rates, value); }
         }
 
         private async Task RefreshRatesAsync()

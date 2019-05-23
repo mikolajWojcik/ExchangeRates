@@ -20,7 +20,10 @@ namespace ExchangeRates.Services
         {
             CurrencyType.GBP,
             CurrencyType.USD,
-            CurrencyType.CHF
+            CurrencyType.CHF,
+            CurrencyType.PLN,
+            CurrencyType.CAD,
+            CurrencyType.CZK
         };
         private readonly ISecureStorageWrapper _wrapper;
 

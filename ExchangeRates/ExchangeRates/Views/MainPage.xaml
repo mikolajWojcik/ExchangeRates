@@ -14,8 +14,11 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-            <Button Command="{Binding ShowSettingsCommand}" Text="Settings"/>
-            <ListView 
+            <Button 
+                Text="Cached data manager" 
+                HorizontalOptions="FillAndExpand"
+                Command="{Binding ShowCachedDataCommand}"/>
+            <ListView               
                 ItemsSource="{Binding Rates}" 
                 HasUnevenRows="True"
                 SeparatorVisibility="None"
@@ -31,7 +34,7 @@
                                 <Grid
                                     Margin="5">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="20"/>
+                                        <RowDefinition Height="35"/>
                                         <RowDefinition Height="20"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
@@ -74,8 +77,9 @@
                                             HorizontalOptions="EndAndExpand"
                                             VerticalOptions="CenterAndExpand"
                                             VerticalTextAlignment="Center"
+                                            HorizontalTextAlignment="End"
                                             FontSize="Large"
-                                            Text="{Binding Value, StringFormat='{0:F3} '}"/>
+                                            Text="{Binding Value, StringFormat='{0:G4} '}"/>
                                         <Label 
                                             HorizontalOptions="EndAndExpand"
                                             VerticalOptions="CenterAndExpand"

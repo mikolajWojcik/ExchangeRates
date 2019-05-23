@@ -6,6 +6,8 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ExchangeRates.Services.Interfaces;
 using ExchangeRates.Services;
+using System.Threading;
+using System.Globalization;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace ExchangeRates
@@ -26,12 +28,16 @@ namespace ExchangeRates
             InitializeComponent();
 
             await NavigationService.NavigateAsync("NavigationPage/MainPage");
+
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-GB");
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-GB");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             RegisterViewsForNavigation(containerRegistry);
             RegisterServices(containerRegistry);
+            containerRegistry.RegisterForNavigation<DataManagerPage, DataManagerPageViewModel>();
         }
 
         private static void RegisterServices(IContainerRegistry containerRegistry)
@@ -45,13 +51,14 @@ namespace ExchangeRates
 
             containerRegistry.RegisterSingleton<IChartsEntryAdapter, ChartsEntryAdapter>();
             containerRegistry.RegisterSingleton<IExchangeRateItemAdapter, ExchangeRateItemAdapter>();
+            containerRegistry.RegisterSingleton<ICachedDataItemAdapter, CachedDataItemAdapter>();
         }
 
         private static void RegisterViewsForNavigation(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
-            containerRegistry.RegisterForNavigation<ChartPage, ChartPageViewModel>();
+            containerRegistry.RegisterForNavigation<DataManagerPage, DataManagerPageViewModel>();
             containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
         }
     }

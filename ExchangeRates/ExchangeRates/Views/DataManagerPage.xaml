@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:ExchangeRates.Converters"
+    xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+    xmlns:behavior="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    prism:ViewModelLocator.AutowireViewModel="True"
+    x:Class="ExchangeRates.Views.DataManagerPage"
+    x:Name="ContentPage"
+    Title="{Binding Title}">
+    <ContentPage.Resources>
+        <converter:IEnumerableToStringConverter x:Key="ListToStringConverter"/>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Switch x:Name="switch">
+                    <Switch.Behaviors>
+                        <behavior:EventToCommandBehavior 
+                            EventName="Toggled"
+                            Command="{Binding SwitchToggledCommand}"
+                            CommandParameter="{Binding Source={x:Reference switch}, Path=IsToggled}"/>
+                    </Switch.Behaviors>
+                </Switch>
+                <Label VerticalOptions="CenterAndExpand" FontSize="Medium" Text="Select all" />
+            </StackLayout>
+            
+            <ListView 
+                ItemsSource="{Binding Items}"
+                HasUnevenRows="True"
+                SeparatorVisibility="None"
+                SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout
+                                BackgroundColor="#56ABE4"
+                                Margin="5"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="FillAndExpand"
+                                Orientation="Horizontal">
+                                <StackLayout
+                                    HorizontalOptions="StartAndExpand"
+                                    Margin="5">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        Text="{Binding Date, StringFormat='{0:MMMMM yyyy}'}"/>
+                                    <Label Text="{Binding Types, Converter={StaticResource ListToStringConverter}, StringFormat='Currencies saved: {0}'}"/>
+                                </StackLayout>
+                                <Switch 
+                                    HorizontalOptions="End" 
+                                    VerticalOptions="Center" 
+                                    IsToggled="{Binding IsSelected}"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Command="{Binding RemoveSelectedCommand}" Text="Remove selected"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

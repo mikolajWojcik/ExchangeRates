@@ -2,9 +2,9 @@
 
 namespace ExchangeRates.Views
 {
-    public partial class ChartPage : ContentPage
+    public partial class DataManagerPage : ContentPage
     {
-        public ChartPage()
+        public DataManagerPage()
         {
             InitializeComponent();
         }

@@ -12,7 +12,7 @@ namespace ExchangeRates.Services
 {
     public class ChartsEntryAdapter : IChartsEntryAdapter
     {
-        public IEnumerable<ChartEntry> CreateMicrochartsList(SortedDictionary<DateTime, Dictionary<CurrencyType, double>> rates, CurrencyType currencyType)
+        public IEnumerable<ChartEntry> CreateChartEntryList(SortedDictionary<DateTime, Dictionary<CurrencyType, double>> rates, CurrencyType currencyType)
         {
             var outputList = new List<ChartEntry>();
 

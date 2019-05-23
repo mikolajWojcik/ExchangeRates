@@ -38,18 +38,21 @@ namespace ExchangeRates.CustomControls
 
         private void UpdateChartEntries()
         {
-            var maxChartEntry = ChartEntries.Max(x => x.Value);
-            var minChartEntry = ChartEntries.Min(x => x.Value);
-
-            Chart = new LineChart
+            if (ChartEntries != null)
             {
-                Entries = ChartEntries,
-                MaxValue = maxChartEntry + 0.005f,
-                MinValue = minChartEntry - 0.01f,
-                LineMode = LineMode.Spline,
-                PointSize = 2,
-                BackgroundColor = SkiaSharp.SKColor.Empty,
-            };
+                var maxChartEntry = ChartEntries.Max(x => x.Value);
+                var minChartEntry = ChartEntries.Min(x => x.Value);
+
+                Chart = new LineChart
+                {
+                    Entries = ChartEntries,
+                    MaxValue = maxChartEntry + 0.005f,
+                    MinValue = minChartEntry - 0.01f,
+                    LineMode = LineMode.Spline,
+                    PointSize = 2,
+                    BackgroundColor = SkiaSharp.SKColor.Empty,
+                };
+            }
         }
     }
 }

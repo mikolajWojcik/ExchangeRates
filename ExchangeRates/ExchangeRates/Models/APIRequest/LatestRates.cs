@@ -15,23 +15,5 @@ namespace ExchangeRates.Models
         [JsonProperty(PropertyName = "date")]
         public DateTime Date { get; set; }
 
-        internal IEnumerable<ExchangeRateItem> ConvertToExchangeRateItem()
-        {
-            var returnList = new List<ExchangeRateItem>();
-
-            foreach(var rate in Rates)
-            {
-                returnList.Add(new ExchangeRateItem
-                {
-                    BaseCurrencyType = Base,
-                    CurrencyType = rate.Key,
-                    Value = rate.Value,
-                    Date = Date,
-                    ChartDate = Date
-                });
-            }
-
-            return returnList.OrderBy(x => x.CurrencyType.ToString());
-        }
     }
 }

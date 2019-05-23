@@ -12,11 +12,11 @@ namespace ExchangeRates.Services
 {
     public class ChartsEntryAdapter : IChartsEntryAdapter
     {
-        public IEnumerable<ChartEntry> CreateMicrochartsList(HistoricalRates rates, CurrencyType currencyType)
+        public IEnumerable<ChartEntry> CreateMicrochartsList(SortedDictionary<DateTime, Dictionary<CurrencyType, double>> rates, CurrencyType currencyType)
         {
             var outputList = new List<ChartEntry>();
 
-            foreach(var rate in rates.Rates)
+            foreach(var rate in rates)
             {
                 if(rate.Value.ContainsKey(currencyType))
                 {

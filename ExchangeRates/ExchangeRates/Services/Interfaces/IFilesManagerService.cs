@@ -3,16 +3,14 @@ using ExchangeRates.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ExchangeRates.Services.Interfaces
 {
     public interface IFilesManagerService
     {
-        Dictionary<CurrencyType, Dictionary<int, IEnumerable<int>>> GetDataStoredOfflline(CurrencyType baseCurrency);
+        Task<SortedDictionary<DateTime, Dictionary<CurrencyType, double>>> GetDataStoredOffllineAsync(CurrencyType baseCurrency);
 
-        IEnumerable<ExchangeRateItem> GetLatestOfflineData(CurrencyType baseCurrency, IEnumerable<CurrencyType> symbols);
-
-        void SaveRates(HistoricalRates rates);
-        bool IsDataAviableOffline(CurrencyType currencyType, int month, int year);
+        Task SaveRatesAsync(SortedDictionary<DateTime, Dictionary<CurrencyType, double>> rates);
     }
 }

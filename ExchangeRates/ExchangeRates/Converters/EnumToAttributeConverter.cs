@@ -8,15 +8,19 @@ using Xamarin.Forms;
 
 namespace ExchangeRates.Converters
 {
-    public class EnumToDisplayNameConverter : IValueConverter
+    public class EnumToAttributeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value != null && value is Enum enumValue)
+            if(value != null && value is Enum enumValue && parameter is string propertyName && !string.IsNullOrEmpty(propertyName))
             {
                 var attribute = enumValue.GetAttribute<EnumHelperAttribute>();
+                var pinfo = typeof(EnumHelperAttribute).GetProperty(propertyName);
 
-                return attribute != null ? attribute.DisplayName : enumValue.ToString();
+                if(attribute != null && pinfo != null)
+                    return pinfo.GetValue(attribute);              
+                else
+                    return enumValue.ToString();
             }
             else
             {

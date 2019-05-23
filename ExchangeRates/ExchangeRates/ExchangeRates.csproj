@@ -5,8 +5,84 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microcharts" Version="0.7.1" />
-    <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
+    <None Remove="Resources\Flags\au_flag.png" />
+    <None Remove="Resources\Flags\bg_flag.png" />
+    <None Remove="Resources\Flags\br_flag.png" />
+    <None Remove="Resources\Flags\ca_flag.png" />
+    <None Remove="Resources\Flags\ch_flag.png" />
+    <None Remove="Resources\Flags\cn_flag.png" />
+    <None Remove="Resources\Flags\cz_flag.png" />
+    <None Remove="Resources\Flags\dk_flag.png" />
+    <None Remove="Resources\Flags\eu_flag.png" />
+    <None Remove="Resources\Flags\gb_flag.png" />
+    <None Remove="Resources\Flags\hk_flag.png" />
+    <None Remove="Resources\Flags\hr_flag.png" />
+    <None Remove="Resources\Flags\hu_flag.png" />
+    <None Remove="Resources\Flags\il_flag.png" />
+    <None Remove="Resources\Flags\in_flag.png" />
+    <None Remove="Resources\Flags\is_flag.png" />
+    <None Remove="Resources\Flags\jp_flag.png" />
+    <None Remove="Resources\Flags\kr_flag.png" />
+    <None Remove="Resources\Flags\mx_flag.png" />
+    <None Remove="Resources\Flags\my_flag.png" />
+    <None Remove="Resources\Flags\no_flag.png" />
+    <None Remove="Resources\Flags\nz_flag.png" />
+    <None Remove="Resources\Flags\ph_flag.png" />
+    <None Remove="Resources\Flags\pl_flag.png" />
+    <None Remove="Resources\Flags\ro_flag.png" />
+    <None Remove="Resources\Flags\ru_flag.png" />
+    <None Remove="Resources\Flags\se_flag.png" />
+    <None Remove="Resources\Flags\sg_flag.png" />
+    <None Remove="Resources\Flags\th_flag.png" />
+    <None Remove="Resources\Flags\tr_flag.png" />
+    <None Remove="Resources\Flags\us_flag.png" />
+    <None Remove="Resources\Flags\za_flag.png" />
+    <None Remove="Resources\Icons\arrow_left.png" />
+    <None Remove="Resources\Icons\arrow_right.png" />
+    <None Remove="Resources\Icons\chart_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Flags\au_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\bg_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\br_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\ca_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\ch_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\cn_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\cz_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\dk_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\eu_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\gb_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\hk_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\hr_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\hu_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\il_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\in_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\is_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\jp_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\kr_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\mx_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\my_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\no_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\nz_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\ph_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\pl_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\ro_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\ru_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\se_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\sg_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\th_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\tr_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\us_flag.png" />
+    <EmbeddedResource Include="Resources\Flags\za_flag.png" />
+    <EmbeddedResource Include="Resources\Icons\arrow_left.png" />
+    <EmbeddedResource Include="Resources\Icons\arrow_right.png" />
+    <EmbeddedResource Include="Resources\Icons\chart_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microcharts" Version="0.8.5-pre" />
+    <PackageReference Include="Microcharts.Forms" Version="0.8.5-pre" />
     <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.0.0" />
     <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />

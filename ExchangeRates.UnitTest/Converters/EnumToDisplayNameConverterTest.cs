@@ -11,18 +11,18 @@ namespace ExchangeRates.Test.Converters
 {
     public class EnumToDisplayNameConverterTest
     {
-        private readonly EnumToDisplayNameConverter _converter;
+        private readonly EnumToAttributeConverter _converter;
 
         public EnumToDisplayNameConverterTest()
         {
-            _converter = new EnumToDisplayNameConverter(); 
+            _converter = new EnumToAttributeConverter(); 
         }
 
         [Test]
         public void ShouldReturnDisplayNameAttribute()
         {
             var testEnum = CurrencyType.CZK;
-            var displayName = testEnum.GetAttribute<EnumHelperAttribute>().DisplayName;
+            var displayName = testEnum.GetAttribute<EnumHelperAttribute>().CurrencyName;
 
             var actualDisplayName = _converter.Convert(testEnum, null, null, null);
 

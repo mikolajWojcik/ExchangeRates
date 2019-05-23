@@ -4,103 +4,103 @@ namespace ExchangeRates.Models.Enums
 {
     public enum CurrencyType
     {
-        [EnumHelper(DisplayName = "Euro")]
+        [EnumHelper(CurrencyName = "Euro", CountryName = "European Union", FlagImage = "eu_flag.png")]
         EUR,
 
-        [EnumHelper(DisplayName = "Bulgarian lev")]
+        [EnumHelper(CurrencyName = "Bulgarian lev", CountryName = "Bulgaria", FlagImage = "bg_flag.png")]
         BGN,
 
-        [EnumHelper(DisplayName = "New Zealand dollar")]
+        [EnumHelper(CurrencyName = "New Zealand dollar", CountryName = "New Zealand", FlagImage = "nz_flag.png")]
         NZD,
 
-        [EnumHelper(DisplayName = "Israeli shekel")]
+        [EnumHelper(CurrencyName = "Israeli shekel", CountryName = "Israel", FlagImage = "il_flag.png")]
         ILS,
 
-        [EnumHelper(DisplayName = "Russian ruble")]
+        [EnumHelper(CurrencyName = "Russian ruble", CountryName = "Russia", FlagImage = "ru_flag.png")]
         RUB,
 
-        [EnumHelper(DisplayName = "Canadian dollar")]
+        [EnumHelper(CurrencyName = "Canadian dollar", CountryName = "Canada", FlagImage = "ca_flag.png")]
         CAD,
 
-        [EnumHelper(DisplayName = "United States dollar")]
+        [EnumHelper(CurrencyName = "United States dollar", CountryName = "USA", FlagImage = "us_flag.png")]
         USD,
 
-        [EnumHelper(DisplayName = "Philippine peso")]
+        [EnumHelper(CurrencyName = "Philippine peso", CountryName = "Philippines", FlagImage = "ph_flag.png")]
         PHP,
 
-        [EnumHelper(DisplayName = "Swiss franc")]
+        [EnumHelper(CurrencyName = "Swiss franc", CountryName = "Switzerland", FlagImage = "ch_flag.png")]
         CHF,
 
-        [EnumHelper(DisplayName = "South African rand")]
+        [EnumHelper(CurrencyName = "South African rand", CountryName = "South Africa", FlagImage = "za_flag.png")]
         ZAR,
 
-        [EnumHelper(DisplayName = "Australian dollar")]
+        [EnumHelper(CurrencyName = "Australian dollar", CountryName = "Australia", FlagImage = "au_flag.png")]
         AUD,
 
-        [EnumHelper(DisplayName = "Japanese yen")]
+        [EnumHelper(CurrencyName = "Japanese yen", CountryName = "Japan", FlagImage = "jp_flag.png")]
         JPY,
 
-        [EnumHelper(DisplayName = "Turkish lira")]
+        [EnumHelper(CurrencyName = "Turkish lira", CountryName = "Turkey", FlagImage = "tr_flag.png")]
         TRY,
 
-        [EnumHelper(DisplayName = "Hong Kong dollar")]
+        [EnumHelper(CurrencyName = "Hong Kong dollar", CountryName = "Hong Kong", FlagImage = "hk_flag.png")]
         HKD,
 
-        [EnumHelper(DisplayName = "Malaysian ringgit")]
+        [EnumHelper(CurrencyName = "Malaysian ringgit", CountryName = "Malaysia", FlagImage = "my_flag.png")]
         MYR,
 
-        [EnumHelper(DisplayName = "Thai baht")]
+        [EnumHelper(CurrencyName = "Thai baht", CountryName = "Thailand", FlagImage = "th_flag.png")]
         THB,
 
-        [EnumHelper(DisplayName = "Croatian kuna")]
+        [EnumHelper(CurrencyName = "Croatian kuna", CountryName = "Croatia", FlagImage = "hr_flag.png")]
         HRK,
 
-        [EnumHelper(DisplayName = "Norwegian krone")]
+        [EnumHelper(CurrencyName = "Norwegian krone", CountryName = "Norway", FlagImage = "no_flag.png")]
         NOK,
 
-        [EnumHelper(DisplayName = "Indonesian rupiah")]
+        [EnumHelper(CurrencyName = "Indonesian rupiah", CountryName = "Indonesia", FlagImage = "id_flag.png")]
         IDR,
 
-        [EnumHelper(DisplayName = "Danish krone")]
+        [EnumHelper(CurrencyName = "Danish krone", CountryName = "Denmark", FlagImage = "dk_flag.png")]
         DKK,
 
-        [EnumHelper(DisplayName = "Czech koruna")]
+        [EnumHelper(CurrencyName = "Czech koruna", CountryName = "Czechia", FlagImage = "cz_flag.png")]
         CZK,
 
-        [EnumHelper(DisplayName = "Hungarian forint")]
+        [EnumHelper(CurrencyName = "Hungarian forint", CountryName = "Hungary", FlagImage = "hu_flag.png")]
         HUF,
 
-        [EnumHelper(DisplayName = "Pound sterling")]
+        [EnumHelper(CurrencyName = "Pound sterling", CountryName = "United Kingdom", FlagImage = "gb_flag.png")]
         GBP,
 
-        [EnumHelper(DisplayName = "Mexican peso")]
+        [EnumHelper(CurrencyName = "Mexican peso", CountryName = "Mexico", FlagImage = "mx_flag.png")]
         MXN,
 
-        [EnumHelper(DisplayName = "South Korean won")]
+        [EnumHelper(CurrencyName = "South Korean won", CountryName = "South Korea", FlagImage = "kr_flag.png")]
         KRW,
 
-        [EnumHelper(DisplayName = "Bulgarian lev")]
+        [EnumHelper(CurrencyName = "Icelandic króna", CountryName = "Iceland", FlagImage = "is_flag.png")]
         ISK,
 
-        [EnumHelper(DisplayName = "Bulgarian lev")]
+        [EnumHelper(CurrencyName = "Singapore dollar", CountryName = "Singapore", FlagImage = "sg_flag.png")]
         SGD,
 
-        [EnumHelper(DisplayName = "Bulgarian lev")]
+        [EnumHelper(CurrencyName = "Brazilian real", CountryName = "Brazil", FlagImage = "br_flag.png")]
         BRL,
 
-        [EnumHelper(DisplayName = "Bulgarian lev")]
+        [EnumHelper(CurrencyName = "Polish złoty", CountryName = "Poland", FlagImage = "pl_flag.png")]
         PLN,
 
-        [EnumHelper(DisplayName = "Icelandic króna")]
+        [EnumHelper(CurrencyName = "Indian rupee", CountryName = "India", FlagImage = "in_flag.png")]
         INR,
 
-        [EnumHelper(DisplayName = "Romanian leu")]
+        [EnumHelper(CurrencyName = "Romanian leu", CountryName = "Romania", FlagImage = "ro_flag.png")]
         RON,
 
-        [EnumHelper(DisplayName = "Chinese yuan")]
+        [EnumHelper(CurrencyName = "Chinese yuan", CountryName = "China", FlagImage = "cn_flag.png")]
         CNY,
 
-        [EnumHelper(DisplayName = "Swedish krona")]
+        [EnumHelper(CurrencyName = "Swedish krona", CountryName = "Sweden", FlagImage = "se_flag.png")]
         SEK,
     }
 }

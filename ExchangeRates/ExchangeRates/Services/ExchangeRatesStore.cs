@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Microcharts;
 
 namespace ExchangeRates.Services
 {
@@ -24,7 +25,7 @@ namespace ExchangeRates.Services
             _entryAdapter = entryAdapter;
         }
 
-        public async Task<IEnumerable<Entry>> GetDataForChartGenerationAsync(CurrencyType currencyType, int month, int year)
+        public async Task<IEnumerable<ChartEntry>> GetDataForChartGenerationAsync(CurrencyType currencyType, int month, int year)
         {
             if (year < 1999)
                 throw new ArgumentException("Data is not aviable for years before 1999");
@@ -45,7 +46,7 @@ namespace ExchangeRates.Services
             else
             {
                 //TO DO
-                return new List<Entry>();
+                return new List<ChartEntry>();
             }
         }
 

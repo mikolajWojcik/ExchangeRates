@@ -9,6 +9,6 @@ namespace ExchangeRates.Services.Interfaces
 {
     public interface IChartsEntryAdapter
     {
-        IEnumerable<Entry> CreateMicrochartsList(HistoricalRates rate, CurrencyType currencyType);
+        IEnumerable<ChartEntry> CreateMicrochartsList(HistoricalRates rate, CurrencyType currencyType);
     }
 }

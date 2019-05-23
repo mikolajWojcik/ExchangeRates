@@ -41,12 +41,39 @@ namespace ExchangeRates.ViewModels
 
             ShowChartCommand = new DelegateCommand<ExchangeRateItem>(ShowChart, (t) => !IsBusy && t != null)
                 .ObservesProperty(() => IsBusy);
-            
+
+            DecrementChartDateCommand = new DelegateCommand<ExchangeRateItem>(DecrementChartDate, CanDecrementDate)
+                .ObservesProperty(() => IsBusy);
+
+            IncrementChartDateCommand = new DelegateCommand<ExchangeRateItem>(IncrementChartDate, CanIncrementChartDate)
+                .ObservesProperty(() => IsBusy);
+        }
+
+        private void IncrementChartDate(ExchangeRateItem obj)
+        {
+            obj.ChartDate = obj.ChartDate.AddMonths(1);
+        }
+
+        private bool CanIncrementChartDate(ExchangeRateItem arg)
+        {
+            return !IsBusy && arg != null && arg.ChartDate.AddMonths(1) <= DateTime.Now;
+        }
+
+        private void DecrementChartDate(ExchangeRateItem obj)
+        {
+            obj.ChartDate = obj.ChartDate.AddMonths(-1);
+        }
+
+        private bool CanDecrementDate(ExchangeRateItem arg)
+        {
+            return !IsBusy && arg != null && arg.ChartDate.AddMonths(-1) >= new DateTime(1999, 1, 1);
         }
 
         public DelegateCommand RefreshCommand { get; }
         public DelegateCommand ShowSettingsCommand { get; }
         public DelegateCommand<ExchangeRateItem> ShowChartCommand { get; }
+        public DelegateCommand<ExchangeRateItem> DecrementChartDateCommand { get; }
+        public DelegateCommand<ExchangeRateItem> IncrementChartDateCommand { get; }
 
         public ObservableCollection<ExchangeRateItem> Rates
         {
@@ -57,17 +84,32 @@ namespace ExchangeRates.ViewModels
         private async Task RefreshRatesAsync()
         {
             Rates = new ObservableCollection<ExchangeRateItem>(await _ratesStore.GetLatestRatesAsync());
+
+            foreach(var rate in Rates)
+            {
+                rate.ChartDateChanged += OnItemChartDateChanged;
+            }
         }
 
-        private void ShowChart(ExchangeRateItem obj)
+        private async void ShowChart(ExchangeRateItem obj)
         {
-            IsBusy = true;
-            var parameters = new NavigationParameters
-            {
-                { nameof(ExchangeRateItem), obj }
-            };
+            obj.IsChartVisible = !obj.IsChartVisible;
 
-            NavigateToPage(nameof(ChartPage), parameters);
+            if(obj.IsChartVisible)
+            {
+                obj.ChartEntries = await _ratesStore.GetDataForChartGenerationAsync(obj.CurrencyType, obj.ChartDate.Month, obj.ChartDate.Year);
+            }
+        }
+
+        private async void OnItemChartDateChanged(object sender, EventArgs e)
+        {
+            var item = (ExchangeRateItem)sender;
+
+            if(item.IsChartVisible)
+                item.ChartEntries = await _ratesStore.GetDataForChartGenerationAsync(item.CurrencyType, item.ChartDate.Month, item.ChartDate.Year);
+
+            IncrementChartDateCommand.RaiseCanExecuteChanged();
+            DecrementChartDateCommand.RaiseCanExecuteChanged();
         }
 
         private void NavigateToPage(string pageName, NavigationParameters parameters = null)

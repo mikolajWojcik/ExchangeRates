@@ -26,7 +26,8 @@ namespace ExchangeRates.Models
                     BaseCurrencyType = Base,
                     CurrencyType = rate.Key,
                     Value = rate.Value,
-                    Date = Date
+                    Date = Date,
+                    ChartDate = Date
                 });
             }
 

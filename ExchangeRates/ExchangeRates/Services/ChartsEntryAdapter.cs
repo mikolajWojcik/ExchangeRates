@@ -4,6 +4,7 @@ using ExchangeRates.Services.Interfaces;
 using Microcharts;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -11,22 +12,23 @@ namespace ExchangeRates.Services
 {
     public class ChartsEntryAdapter : IChartsEntryAdapter
     {
-        public IEnumerable<Entry> CreateMicrochartsList(HistoricalRates rates, CurrencyType currencyType)
+        public IEnumerable<ChartEntry> CreateMicrochartsList(HistoricalRates rates, CurrencyType currencyType)
         {
-            var outputList = new List<Entry>();
+            var outputList = new List<ChartEntry>();
 
             foreach(var rate in rates.Rates)
             {
                 if(rate.Value.ContainsKey(currencyType))
                 {
-                    outputList.Add(new Entry((float)(rate.Value[currencyType]))
+                    outputList.Add(new ChartEntry((float)(rate.Value[currencyType]))
                     {
-                        Label = rate.Key.ToString("dd")
+                        ValueLabel = rate.Value[currencyType].ToString("f4"),
+                        Label = rate.Key.Day.ToString()
                     });
                 }
             }
 
-            return outputList.OrderBy(x => x.Label);
+            return outputList;
         }
     }
 }

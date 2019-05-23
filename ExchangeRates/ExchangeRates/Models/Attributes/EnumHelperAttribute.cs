@@ -7,6 +7,10 @@ namespace ExchangeRates.Models.Attributes
     [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
     public class EnumHelperAttribute : Attribute
     {
-        public string DisplayName { get; set; }
+        public string CurrencyName { get; set; }
+
+        public string CountryName { get; set; }
+
+        public string FlagImage { get; set; }
     }
 }

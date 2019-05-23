@@ -11,7 +11,7 @@ namespace ExchangeRates.Models
     public class HistoricalRates : BaseRates
     {
         [JsonProperty(PropertyName = "rates")]
-        public Dictionary<DateTime, Dictionary<CurrencyType, double>> Rates { get; set; }
+        public SortedDictionary<DateTime, Dictionary<CurrencyType, double>> Rates { get; set; }
 
         [JsonProperty(PropertyName = "start_at")]
         public DateTime StartDate { get; set; }

@@ -2,26 +2,137 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:ExchangeRates.Converters"
+    xmlns:controls="clr-namespace:ExchangeRates.CustomControls"
+    xmlns:helpers="clr-namespace:ExchangeRates.Helpers"
     x:Class="ExchangeRates.Views.MainPage"
     x:Name="ContentPage"
     Title="{Binding Title}">
-
-    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-        <Button Command="{Binding ShowSettingsCommand}" Text="Settings"/>
-        <ListView ItemsSource="{Binding Rates}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding CurrencyType}" FontAttributes="Bold"/>
-                            <Label Text="{Binding Value}"/>
-                            <Label Text="{Binding Date, StringFormat='Record date: {0:dd MMMM YYYY}'}" />
-                            <Button Command="{Binding BindingContext.ShowChartCommand, Source={x:Reference ContentPage}}" CommandParameter="{Binding .}" Text="Chart"/>
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
-
+    <ContentPage.Resources>
+        <converter:EnumToAttributeConverter x:Key="EnumAttributeConverter"/>
+        <converter:CurrencyTypeFlagImageConverter x:Key="FlagImageConverter"/>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+            <Button Command="{Binding ShowSettingsCommand}" Text="Settings"/>
+            <ListView 
+                ItemsSource="{Binding Rates}" 
+                HasUnevenRows="True"
+                SeparatorVisibility="None"
+                SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout 
+                                BackgroundColor="#56ABE4"
+                                Margin="5"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="FillAndExpand">
+                                <Grid
+                                    Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="20"/>
+                                        <RowDefinition Height="20"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="30"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image
+                                        Grid.RowSpan="2"
+                                        HorizontalOptions="CenterAndExpand"
+                                        VerticalOptions="CenterAndExpand"
+                                        HeightRequest="40"
+                                        Aspect="AspectFit"
+                                        Source="{Binding CurrencyType, Converter={StaticResource FlagImageConverter}}" />
+                                    <Label
+                                        Grid.Column="1"
+                                        HorizontalOptions="StartAndExpand"
+                                        VerticalTextAlignment="Center"
+                                        HorizontalTextAlignment="Start"
+                                        VerticalOptions="Center"
+                                        FontSize="15"
+                                        FontAttributes="Bold"
+                                        Text="{Binding CurrencyType, Converter={StaticResource EnumAttributeConverter}, ConverterParameter='CurrencyName'}" />
+                                    <Label
+                                        Grid.Column="1"
+                                        Grid.Row="1"
+                                        HorizontalOptions="StartAndExpand"
+                                        VerticalOptions="Center"
+                                        VerticalTextAlignment="Center"
+                                        HorizontalTextAlignment="Start"
+                                        Text="{Binding CurrencyType, Converter={StaticResource EnumAttributeConverter}, ConverterParameter='CountryName'}" />
+                                    <StackLayout
+                                        Grid.Column="2"
+                                        Grid.RowSpan="2"
+                                        Orientation="Horizontal" 
+                                        Margin="0,0,10,0"
+                                        Spacing="0">
+                                        <Label                                       
+                                            HorizontalOptions="EndAndExpand"
+                                            VerticalOptions="CenterAndExpand"
+                                            VerticalTextAlignment="Center"
+                                            FontSize="Large"
+                                            Text="{Binding Value, StringFormat='{0:F3} '}"/>
+                                        <Label 
+                                            HorizontalOptions="EndAndExpand"
+                                            VerticalOptions="CenterAndExpand"
+                                            VerticalTextAlignment="Center"
+                                            FontSize="Large"
+                                            Text="{Binding BaseCurrencyType}"/>
+                                    </StackLayout>
+                                    <ImageButton
+                                        Grid.Column="3"
+                                        Grid.RowSpan="2"
+                                        BackgroundColor="Transparent"
+                                        IsOpaque="False"
+                                        HorizontalOptions="CenterAndExpand"
+                                        VerticalOptions="CenterAndExpand"
+                                        Source="{helpers:ImageResource ExchangeRates.Resources.Icons.chart_icon.png}"
+                                        Command="{Binding BindingContext.ShowChartCommand, Source={x:Reference ContentPage}}"
+                                        CommandParameter="{Binding .}"/>
+                                </Grid>
+                                <StackLayout 
+                                    Orientation="Horizontal" 
+                                    HeightRequest="30"
+                                    Margin="20,0,20,0"
+                                    IsVisible="{Binding IsChartVisible}">
+                                    <ImageButton
+                                        BackgroundColor="Transparent"
+                                        IsOpaque="False"
+                                        HorizontalOptions="Start"
+                                        VerticalOptions="CenterAndExpand"
+                                        Source="{helpers:ImageResource ExchangeRates.Resources.Icons.arrow_left.png}"
+                                        Command="{Binding BindingContext.DecrementChartDateCommand, Source={x:Reference ContentPage}}"
+                                        CommandParameter="{Binding .}"/>
+                                    <Label 
+                                        HorizontalOptions="FillAndExpand" 
+                                        HorizontalTextAlignment="Center"
+                                        VerticalTextAlignment="Center"
+                                        FontSize="Medium"
+                                        Text="{Binding ChartDate, StringFormat='{0:MMMMM yyyy}'}" />
+                                    <ImageButton
+                                        BackgroundColor="Transparent"
+                                        IsOpaque="False"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="CenterAndExpand"
+                                        Source="{helpers:ImageResource ExchangeRates.Resources.Icons.arrow_right.png}"
+                                        Command="{Binding BindingContext.IncrementChartDateCommand, Source={x:Reference ContentPage}}"
+                                        CommandParameter="{Binding .}"/>
+                                </StackLayout>
+                                <controls:MicroBarChart 
+                                    HeightRequest="150"
+                                    IsVisible="{Binding IsChartVisible}"
+                                    ChartEntries="{Binding ChartEntries}"                                  
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="FillAndExpand"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

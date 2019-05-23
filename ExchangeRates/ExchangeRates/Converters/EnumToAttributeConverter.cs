@@ -12,15 +12,18 @@ namespace ExchangeRates.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value != null && value is Enum enumValue && parameter is string propertyName && !string.IsNullOrEmpty(propertyName))
+            if(value != null && value is Enum enumValue)
             {
-                var attribute = enumValue.GetAttribute<EnumHelperAttribute>();
-                var pinfo = typeof(EnumHelperAttribute).GetProperty(propertyName);
+                if (parameter is string propertyName && !string.IsNullOrEmpty(propertyName))
+                {
+                    var attribute = enumValue.GetAttribute<EnumHelperAttribute>();
+                    var pinfo = typeof(EnumHelperAttribute).GetProperty(propertyName);
 
-                if(attribute != null && pinfo != null)
-                    return pinfo.GetValue(attribute);              
-                else
-                    return enumValue.ToString();
+                    if (attribute != null && pinfo != null)
+                        return pinfo.GetValue(attribute);
+                }
+                
+                return enumValue.ToString();
             }
             else
             {

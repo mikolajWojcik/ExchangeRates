@@ -26,7 +26,7 @@ namespace ExchangeRates.Converters
                 }                 
             }
 
-            return string.Empty;           
+            return default(ImageSource);           
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
